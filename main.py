@@ -2,7 +2,8 @@ from src import Client, RSA
 
 
 if __name__ == '__main__':
-    rsa = RSA(seed=0)
+    rsa = RSA(seed=0, bit_mask='0b010000')
+    print(rsa.generate_keypair())
     alice = Client(name='Alice', keypair=rsa.generate_keypair())
     bob = Client(name='Bob', keypair=rsa.generate_keypair())
     
