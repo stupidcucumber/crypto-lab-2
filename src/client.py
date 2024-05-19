@@ -1,13 +1,12 @@
 from __future__ import annotations
 import enum
-import math
 from .keypair import Keypair
 from .utils import modpow, find_d
 
 
 class DecryptionType(enum.IntEnum):
     StandaloneDecryption: int = 0
-    ChineeseDecryption: int = 1 
+    ChineseDecryption: int = 1 
 
 
 class Client:
@@ -49,7 +48,7 @@ class Client:
         for enc_letter in message:
             if self.decryption_type == DecryptionType.StandaloneDecryption:
                 ascii_l = self._standard_decryption(symbol=enc_letter)
-            elif self.decryption_type == DecryptionType.ChineeseDecryption:
+            elif self.decryption_type == DecryptionType.ChineseDecryption:
                 ascii_l = self._chineese_decryption(symbol=enc_letter)
             result.append(chr(ascii_l))
         return ''.join(result)

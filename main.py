@@ -17,16 +17,16 @@ if __name__ == '__main__':
     alice = Client(
         name='Alice', 
         keypair=rsa.generate_keypair(), 
-        decryption_type=DecryptionType.ChineeseDecryption
+        decryption_type=DecryptionType.ChineseDecryption
     )
     bob = Client(
         name='Bob', 
         keypair=rsa.generate_keypair(), 
-        decryption_type=DecryptionType.ChineeseDecryption
+        decryption_type=DecryptionType.ChineseDecryption
     )
-    print(alice.keypair)
-    print(bob.keypair)
-    # Sending messages
+    print('Alice\'s keypair: ', alice.keypair)
+    print('Bob\'s keypair: ', bob.keypair)
+    
     alice.send_message(
         user=bob,
         message='Hi Bob! How are you?'
