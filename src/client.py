@@ -2,7 +2,7 @@ from __future__ import annotations
 import enum
 import math
 from .keypair import Keypair
-from .utils import modpow
+from .utils import modpow, find_d
 
 
 class DecryptionType(enum.IntEnum):
@@ -15,27 +15,6 @@ class Client:
         self.name: str = name
         self.keypair: Keypair = keypair
         self.decryption_type: DecryptionType = decryption_type
-        
-    def _find_d(self, e: int, m: int) -> int:
-        a = e
-        b = m
-        x = 0
-        y = 1
-        while True:
-            if a == 1:
-                return y
-            if a == 0:
-                raise ValueError('Does not exists!')
-            q = math.floor(b / a)
-            b = b - a * q
-            x = x + q * y
-            if b == 1:
-                return m - x
-            if b == 1:
-                raise ValueError('Does not exists!')
-            q = math.floor(a / b)
-            a = a - b * q
-            y = y + q * x
         
     def fi(self, n: int) -> int:
         return n - 1
@@ -54,7 +33,7 @@ class Client:
         base_2 = symbol % self.keypair.p
         cong_1 = modpow(base=base_1, pow=exponent_1, mod=self.keypair.q)
         cong_2 = modpow(base=base_2, pow=exponent_2, mod=self.keypair.p)
-        m = self._find_d(self.keypair.p, self.keypair.q)
+        m = find_d(self.keypair.p, self.keypair.q)
         return (cong_2 + (cong_1 - cong_2) * m * self.keypair.p) % self.keypair.privateKey[1]
         
     def _encrypt(self, message: str, public_key: tuple[int, int]) -> list[int]:
