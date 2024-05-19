@@ -35,12 +35,16 @@ class RSA:
             y = y + q * x
     
     def generate_keypair(self, e: int = 23) -> Keypair:
-        p = next(self.generator)
-        q = next(self.generator)
-        n = q * p
-        carmichael_lambda = self._carmichael_totion(p - 1, q - 1)
-        d = self._find_d(e=e, m=carmichael_lambda)
+        d = 1
+        while d == 1:
+            p = next(self.generator)
+            q = next(self.generator)
+            n = q * p
+            carmichael_lambda = self._carmichael_totion(p - 1, q - 1)
+            d = self._find_d(e=e, m=carmichael_lambda)
         return Keypair(
-            privateLey=(d, n),
-            publicKey=(e, n)
+            privateKey=(d, n),
+            publicKey=(e, n),
+            p=p,
+            q=q
         )

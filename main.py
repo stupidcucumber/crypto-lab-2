@@ -1,12 +1,31 @@
-from src import Client, RSA
+import argparse
+from src import Client, RSA, DecryptionType
+
+
+def parse_arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--bits', type=str, default='0b000001',
+        help='Mask of the required bits in the prime number.'
+    )
+    return parser.parse_args()
 
 
 if __name__ == '__main__':
-    rsa = RSA(seed=0, bit_mask='0b010000')
-    print(rsa.generate_keypair())
-    alice = Client(name='Alice', keypair=rsa.generate_keypair())
-    bob = Client(name='Bob', keypair=rsa.generate_keypair())
-    
+    args = parse_arguments()
+    rsa = RSA(seed=0, bit_mask=args.bits)
+    alice = Client(
+        name='Alice', 
+        keypair=rsa.generate_keypair(), 
+        decryption_type=DecryptionType.ChineeseDecryption
+    )
+    bob = Client(
+        name='Bob', 
+        keypair=rsa.generate_keypair(), 
+        decryption_type=DecryptionType.ChineeseDecryption
+    )
+    print(alice.keypair)
+    print(bob.keypair)
     # Sending messages
     alice.send_message(
         user=bob,
