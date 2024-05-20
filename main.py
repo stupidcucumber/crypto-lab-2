@@ -26,6 +26,7 @@ if __name__ == '__main__':
     )
     print('Alice\'s keypair: ', alice.keypair)
     print('Bob\'s keypair: ', bob.keypair)
+    print()
     
     alice.send_message(
         user=bob,
