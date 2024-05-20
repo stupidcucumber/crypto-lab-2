@@ -10,7 +10,7 @@ def parse_arguments() -> argparse.Namespace:
         help='Number of iterations per bitmask length.'
     )
     parser.add_argument(
-        '--min-length', type=int, default=3,
+        '--min-length', type=int, default=5,
         help='Minimal length of a binary representation of the primary number.'
     )
     parser.add_argument(
