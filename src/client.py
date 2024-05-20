@@ -10,10 +10,12 @@ class DecryptionType(enum.IntEnum):
 
 
 class Client:
-    def __init__(self, name: str, keypair: Keypair, decryption_type: DecryptionType) -> None:
+    def __init__(self, name: str, keypair: Keypair, decryption_type: DecryptionType,
+                 logs: bool = True) -> None:
         self.name: str = name
         self.keypair: Keypair = keypair
         self.decryption_type: DecryptionType = decryption_type
+        self.logs: bool = logs
         
     def fi(self, n: int) -> int:
         return n - 1
@@ -62,7 +64,8 @@ class Client:
         decrypted_message = self._decrypt(message, key=self.keypair.privateKey, decryption_type=self.decryption_type)
         m_hash = hex(hash(message=decrypted_message))
         m_hash_decrypted = self._decrypt(signature, key=sender_public_key, decryption_type=DecryptionType.StandaloneDecryption)
-        print('%s: ' % name, decrypted_message, '(got hash: 0x%s, actual hash: %s)' % (m_hash_decrypted, m_hash))
+        if self.logs:
+            print('%s: ' % name, decrypted_message, '(got hash: 0x%s, actual hash: %s)' % (m_hash_decrypted, m_hash))
         
     def send_message(self, user: Client, message: str) -> None:
         encrypted_message = self._encrypt(message, key=user.keypair.publicKey)
